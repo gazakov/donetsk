@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Донецк</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f1f1f1;
+      }
+
+      /* Верхняя навигация */
+      .top-bar {
+        background: #1c1c1c;
+        color: white;
+        padding: 5px 0;
+        font-size: 12px;
+      }
+
+      .top-bar-links {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-right: 20px;
+      }
+
+      .top-bar-links a {
+        color: #ccc;
+        text-decoration: none;
+      }
+
+      /* Основная навигация */
+      .main-nav {
+        background: linear-gradient(to bottom, #cc0000, #990000);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
+
+      .nav-container {
+        width: 960px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        color: white;
+        text-shadow: 2px 2px 2px #000;
+        padding: 10px 0;
+      }
+
+      /* Основной контент */
+      .main-content {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 20px auto 0;
+        padding: 0 20px;
+        align-items: flex-start;
+      }
+
+      /* Боковое меню */
+      .sidebar {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: auto;
+        align-self: flex-start;
+      }
+
+      .sidebar-header {
+        background: linear-gradient(to bottom, #777777, #444444);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px 6px 0 0;
+        text-shadow: 1px 1px 1px #000;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3),
+          0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .sidebar-menu li {
+        margin-bottom: 8px;
+      }
+
+      .sidebar-menu li a {
+        display: block;
+        padding: 10px 15px;
+        color: #333;
+        text-decoration: none;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.9),
+          rgba(240, 240, 240, 0.7)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: all 0.2s ease;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+      }
+
+      .sidebar-menu li a:hover {
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.95),
+          rgba(245, 245, 245, 0.85)
+        );
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 1);
+      }
+
+      .sidebar-menu li a:active {
+        background: linear-gradient(
+          to bottom,
+          rgba(235, 235, 235, 0.9),
+          rgba(255, 255, 255, 0.8)
+        );
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Стиль для активной ссылки */
+      .sidebar-menu li a.active {
+        background: linear-gradient(
+          to bottom,
+          rgba(204, 0, 0, 0.9),
+          rgba(170, 0, 0, 0.8)
+        );
+        border-color: rgba(204, 0, 0, 0.6);
+        color: white !important;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      /* Карточки владельцев */
+      .owner-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .owner-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .owner-card img {
+        width: 100%;
+        max-width: 200px;
+        border: 1px solid #ccc;
+        padding: 3px;
+        background: white;
+      }
+
+      .owner-name {
+        font-size: 18px;
+        color: #cc0000;
+        margin: 10px 0;
+      }
+
+      .owner-description {
+        color: #666;
+        font-size: 12px;
+      }
+
+      /* Кнопки */
+      .button {
+        background: linear-gradient(to bottom, #ff3333, #cc0000);
+        color: white;
+        padding: 8px 20px;
+        border: 1px solid #990000;
+        border-radius: 3px;
+        text-decoration: none;
+        display: inline-block;
+        text-shadow: 1px 1px 1px #660000;
+      }
+
+      .button:hover {
+        background: linear-gradient(to bottom, #ff4444, #dd0000);
+      }
+
+      /* Секции владельцев и жителей */
+      section {
+        margin: 40px 0;
+      }
+
+      section h2 {
+        text-align: center;
+        color: #333;
+        font-size: 28px;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Стили для владельцев */
+      #owners .owner-container {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        padding: 40px;
+      }
+
+      .owner-box {
+        background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        width: 300px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .owner-box:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+      }
+
+      .owner-box img {
+        width: 200px;
+        height: 400px;
+        object-fit: contain;
+        margin-bottom: 20px;
+        border: 3px solid #cc0000;
+        border-radius: 5px;
+        padding: 5px;
+        background: white;
+      }
+
+      .owner-name {
+        color: #cc0000;
+        font-size: 24px;
+        margin: 15px 0;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        font-weight: bold;
+      }
+
+      .owner-title {
+        color: #333;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .owner-description {
+        margin-top: 15px;
+        padding: 10px;
+        background: linear-gradient(to bottom, #f9f9f9, #f0f0f0);
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: #666;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      /* Стили для жителей */
+      .resident-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .resident-card {
+        background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .resident-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .resident-card img {
+        width: 100px;
+        height: 200px;
+        object-fit: contain;
+        margin-bottom: 10px;
+        border: 2px solid #cc0000;
+        border-radius: 5px;
+        padding: 3px;
+        background: white;
+      }
+
+      .resident-card .name {
+        color: #cc0000;
+        font-size: 16px;
+        margin: 10px 0;
+        font-weight: bold;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      }
+
+      .page-section {
+        display: none;
+      }
+      .page-section.active {
+        display: block;
+      }
+      .nav-link {
+        cursor: pointer;
+        padding: 10px;
+        margin: 5px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        display: inline-block;
+      }
+      .nav-link:hover {
+        background-color: #e0e0e0;
+      }
+
+      .content-page {
+        align-self: flex-start;
+        min-height: 300px;
+        padding: 20px;
+      }
+
+      .event-container,
+      .blacklist-container,
+      .discord-container,
+      .join-container {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .event-card,
+      .blacklist-card {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+
+      .discord-button,
+      .join-button {
+        background: linear-gradient(to bottom, #7289da, #5b6eae);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .discord-button:hover,
+      .join-button:hover {
+        background: linear-gradient(to bottom, #7289da, #4c5b91);
+      }
+
+      .laws-container {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .law-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: linear-gradient(to bottom, #f9f9f9, #f0f0f0);
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .law-section h3 {
+        color: #cc0000;
+        margin-bottom: 15px;
+        font-size: 20px;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      }
+
+      .law-section ol,
+      .law-section ul {
+        margin-left: 20px;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .law-section li {
+        margin-bottom: 10px;
+        padding-left: 10px;
+      }
+
+      .welcome-section {
+        background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .welcome-section h2 {
+        color: #cc0000;
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      }
+
+      .welcome-text {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      /* Новые стили для видео */
+      .video-section {
+        background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #000;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .video-placeholder {
+        aspect-ratio: 16 / 9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1c1c1c;
+        color: #666;
+        font-size: 18px;
+      }
+
+      /* Адаптивные стили для различных устройств */
+      
+      /* Планшеты и большие телефоны */
+      @media screen and (max-width: 1023px) {
+        .main-content {
+          width: 100%;
+          padding: 0 15px;
+          box-sizing: border-box;
+        }
+        
+        .nav-container {
+          width: 100%;
+          padding: 0 15px;
+          box-sizing: border-box;
+        }
+        
+        .owner-container {
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        .owner-box {
+          margin-bottom: 20px;
+          width: 90%;
+          max-width: 400px;
+        }
+        
+        .resident-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      
+      /* Средние телефоны */
+      @media screen and (max-width: 767px) {
+        /* Гамбургер-меню для мобильных */
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+        
+        .sidebar {
+          margin-bottom: 20px;
+          display: none; /* Скрываем боковое меню по умолчанию */
+        }
+        
+        .sidebar.active {
+          display: block;
+          top: 50px;
+          opacity: 1;
+          height: auto;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+        
+        .hamburger-menu {
+          display: block;
+          cursor: pointer;
+          margin-left: auto;
+        }
+        
+        .hamburger-icon {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          width: 30px;
+          height: 20px;
+        }
+        
+        .hamburger-icon span {
+          height: 3px;
+          width: 100%;
+          background-color: white;
+          border-radius: 2px;
+        }
+        
+        .resident-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .event-container, .blacklist-container {
+          padding: 10px;
+        }
+        
+        .law-section {
+          padding: 15px 10px;
+        }
+      }
+      
+      /* Маленькие телефоны (iPhone SE) */
+      @media screen and (max-width: 375px) {
+        .resident-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .welcome-section, .video-section {
+          padding: 15px;
+        }
+        
+        .welcome-section h2 {
+          font-size: 24px;
+        }
+        
+        .welcome-text {
+          font-size: 14px;
+        }
+        
+        h2 {
+          font-size: 22px;
+        }
+        
+        h3 {
+          font-size: 18px;
+        }
+        
+        .owner-box img {
+          width: 100%;
+          height: auto;
+          max-height: 300px;
+        }
+        
+        .event-card, .blacklist-card {
+          padding: 10px;
+        }
+        
+        .logo {
+          font-size: 20px;
+        }
+        
+        .discord-button, .join-button {
+          width: 100%;
+        }
+      }
+
+      /* Улучшенный гамбургер */
+      .hamburger-menu {
+        display: none; /* По умолчанию скрыт, появляется на мобильных */
+        cursor: pointer;
+        margin-left: auto;
+        width: 30px;
+        height: 25px;
+        position: relative;
+        z-index: 100;
+        padding: 5px;
+      }
+      
+      .hamburger-icon {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .hamburger-icon span {
+        display: block;
+        position: absolute;
+        height: 3px;
+        width: 100%;
+        background: white;
+        border-radius: 3px;
+        opacity: 1;
+        left: 0;
+        transform: rotate(0deg);
+        transition: .25s ease-in-out;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      }
+      
+      .hamburger-icon span:nth-child(1) {
+        top: 0px;
+      }
+      
+      .hamburger-icon span:nth-child(2) {
+        top: 10px;
+      }
+      
+      .hamburger-icon span:nth-child(3) {
+        top: 20px;
+      }
+      
+      /* Анимация иконки гамбургера при активации */
+      .hamburger-icon.active span:nth-child(1) {
+        top: 10px;
+        transform: rotate(135deg);
+      }
+      
+      .hamburger-icon.active span:nth-child(2) {
+        opacity: 0;
+        left: -30px;
+      }
+      
+      .hamburger-icon.active span:nth-child(3) {
+        top: 10px;
+        transform: rotate(-135deg);
+      }
+      
+      /* Анимация выпадающего меню */
+      .sidebar {
+        transition: all 0.3s ease-in-out;
+        z-index: 99;
+      }
+      
+      @media screen and (max-width: 767px) {
+        .hamburger-menu {
+          display: block;
+        }
+        
+        .sidebar {
+          position: absolute;
+          top: -100%; /* Скрыто за пределами экрана */
+          left: 0;
+          width: 100%;
+          opacity: 0;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .sidebar.active {
+          display: block;
+          top: 50px; /* Высота навбара */
+          opacity: 1;
+        }
+      }
+
+      /* Боковая панель следует за пользователем при прокрутке (для ПК) */
+      .sidebar {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: auto;
+        align-self: flex-start;
+      }
+      
+      /* Только для ПК-версии (более 767px) добавляем sticky-позиционирование */
+      @media screen and (min-width: 768px) {
+        .sidebar {
+          position: sticky;
+          top: 70px; /* Оставляем место для верхней панели навигации */
+          max-height: calc(100vh - 100px); /* Максимальная высота с учетом отступов */
+          overflow-y: auto; /* Добавляем прокрутку, если меню слишком длинное */
+        }
+      }
+      
+      /* В мобильной версии отключаем sticky-позиционирование */
+      @media screen and (max-width: 767px) {
+        .sidebar {
+          position: absolute; /* Переопределяем sticky для мобильных */
+          top: -100%;
+          left: 0;
+          width: 100%;
+          opacity: 0;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .sidebar.active {
+          display: block;
+          top: 50px;
+          opacity: 1;
+          height: auto;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+      }
+
+      /* Стили для дисклеймера на каждой странице */
+      .page-disclaimer {
+        margin-top: 40px;
+        padding: 15px;
+        background: rgba(245, 245, 245, 0.8);
+        border-radius: 8px;
+        font-size: 13px;
+        color: #555;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      .page-disclaimer p {
+        margin-bottom: 5px;
+      }
+      
+      .page-disclaimer a {
+        color: #cc0000;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+      
+      .page-disclaimer a:hover {
+        text-decoration: underline;
+        color: #990000;
+      }
+      
+      /* Стили для страницы Политика конфиденциальности */
+      .privacy-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      
+      .privacy-container h3 {
+        color: #cc0000;
+        margin-top: 20px;
+      }
+
+      /* Улучшенные стили для КВАДРАТНЫХ кнопок в мобильном меню */
+      @media screen and (max-width: 768px) {
+        .nav-menu, .sidebar, .sidebar.active {
+          position: fixed;
+          left: 0;
+          top: 50px;
+          width: 100%;
+          margin: 0;
+          padding: 10px; /* Добавляем отступы вокруг всего меню */
+          background: linear-gradient(to bottom, #cc0000, #990000);
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          z-index: 999;
+          box-sizing: border-box;
+        }
+
+        .sidebar-menu {
+          margin: 0 auto; /* Центрируем меню */
+          padding: 0;
+          list-style: none;
+          width: 100%;
+          max-width: 600px; /* Максимальная ширина меню */
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px; /* Увеличиваем отступы между кнопками */
+          box-sizing: border-box;
+        }
+
+        .sidebar-menu li {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          aspect-ratio: 1/1;
+        }
+
+        .sidebar-menu a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          color: white;
+          text-decoration: none;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 8px; /* Добавляем скругление углов */
+          width: 100%;
+          box-sizing: border-box;
+          text-align: center;
+          font-size: 16px;
+          font-weight: bold;
+          padding: 5px; /* Добавляем небольшой внутренний отступ */
+          transition: all 0.3s ease; /* Добавляем плавность анимации */
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); /* Тень для текста */
+        }
+
+        .sidebar-menu a:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: scale(0.98); /* Небольшая анимация при нажатии */
+        }
+        
+        .sidebar-menu a.active {
+          background: rgba(255, 255, 255, 0.25);
+          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Для очень маленьких экранов */
+        @media screen and (max-width: 375px) {
+          .sidebar-menu {
+            gap: 5px; /* Уменьшаем отступы для маленьких экранов */
+          }
+          
+          .sidebar-menu a {
+            font-size: 14px; /* Уменьшаем размер текста */
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="logo">Донецк</div>
+        <!-- Улучшенная версия гамбургер-меню -->
+        <div class="hamburger-menu" onclick="toggleMobileMenu()">
+          <div class="hamburger-icon" id="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <aside class="sidebar">
+        <ul class="sidebar-menu">
+          <li><a href="#" onclick="showPage('main')">Главная</a></li>
+          <li><a href="#" onclick="showPage('laws')">Законы</a></li>
+          <li><a href="#" onclick="showPage('events')">Ивенты</a></li>
+          <li>
+            <a href="#" onclick="showPage('best-residents')">Лучшие жители</a>
+          </li>
+          <li><a href="#" onclick="showPage('blacklist')">ЧС Города</a></li>
+          <li><a href="#" onclick="showPage('discord')">Дискорд сервер</a></li>
+          <li><a href="#" onclick="showPage('join')">Вступить</a></li>
+        </ul>
+      </aside>
+
+      <main>
+        <div id="main-page" class="content-page">
+          <!-- Секция с видео -->
+          <div class="video-section">
+            <div class="video-container">
+              <!-- Здесь будет ваше видео -->
+              <div class="video-placeholder">
+                <p>Скоро здесь появится тизер города</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Приветственный текст -->
+          <div class="welcome-section">
+            <h2>Добро пожаловать в Донецк!</h2>
+            <p class="welcome-text">
+              Добро пожаловать на сайт города Донецк! Город который создаёт
+              атмосферу начала 2010-х годов! 
+              Здесь развивается и уважается Y2K и Frutiger Aero,
+              наша архитектура соответствует первому поколению архитекторов майнкрафта!
+            </p>
+          </div>
+
+          <!-- Владельцы города -->
+          <section id="owners">
+            <h2>Владельцы города</h2>
+            <div class="owner-container">
+              <a
+                href="https://gazakov.github.io/"
+                target="_blank"
+                style="text-decoration: none"
+              >
+                <div class="owner-box">
+                  <img
+                    src="https://psv4.userapi.com/s/v1/d/5E50MxiUaSsFbH6lyTh46AKU9q2qTjjiU_FmsNa0tbwaH5p4X-RZuhPtTEJ6QZwE5mHrC2h-vXDE4c8qLAT41m_zQkpVLL0yMAwBF82yg76hzMDd-0Wx0A/skin1.png"
+                    alt="gazakov"
+                  />
+                  <p class="owner-name">gazakov</p>
+                  <p class="owner-title">не придумал</p>
+                  <div class="owner-description">
+                    <p>Я не придумал что писать, привет</p>
+                  </div>
+                </div>
+              </a>
+
+              <a
+                href="https://youtu.be/63hZio9PNzg?si=CBZDtlBgl1GZkidp"
+                target="_blank"
+                style="text-decoration: none"
+              >
+                <div class="owner-box">
+                  <img
+                    src="https://psv4.userapi.com/s/v1/d/ronLUgNbYZkIwwpl19Hhm1GhBHmRRMwsedmQyP-EBb9uLCiOBu0X1rSCQg1TE8JRQ6ACNgfE17uoO0qZ9s02SewXlsA9j2zErAbqmN4aGonADva5fw_TSQ/stuvenbubko_skin.png"
+                    alt="stuvenbubko"
+                  />
+                  <p class="owner-name">stuvenbubko</p>
+                  <p class="owner-title">Стивен Бубко / Витя</p>
+                  <div class="owner-description">
+                    <p>Покурить кальян? - Это работа для меня</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </section>
+
+          <div class="page-disclaimer">
+            <p>Город Донецк на сервере Minecraft СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+
+        <div id="laws-page" class="content-page" style="display: none">
+          <h2 style="margin-bottom: 30px;">Законы города</h2>
+          <div class="laws-container">
+            <div class="law-section">
+              <h3 style="color: #cc0000;">Раздел 1. Общие положения</h3>
+              <ol>
+                <li>Всё население города, включая посетителей, обязано следовать установленным правилам и законам.</li>
+                <li>Границы города зафиксированы и ясны каждому жителю и гостю.</li>
+              </ol>
+            </div>
+
+            <div class="law-section">
+              <h3 style="color: #cc0000;">Раздел 2. Свободное времяпровождение и развлечения</h3>
+              <ol>
+                <li>Горожанам разрешается наслаждаться жизнью, участвовать в мероприятиях и свободно проводить время в рамках приемлемых норм поведения.</li>
+                <li>Организация ПвП с подтверждением согласия сторон допустима без нарушения общественного порядка и личной безопасности.</li>
+              </ol>
+            </div>
+
+            <div class="law-section">
+              <h3 style="color: #cc0000;">Раздел 3. Правила пользования землёй и строительства</h3>
+              <ol>
+                <li>Строительные работы могут начинаться только после получения официального разрешения от местных властей.</li>
+                <li>Временные сооружения разрешены, но по их сносу необходимо очистить местность и восстановить исходное состояние.</li>
+                <li>Взрывы под контролем допускаются с обязательством по восстановлению зоны до начального состояния.</li>
+                <li>Все строения должны соответствовать эстетическим и культурным нормам и быть снесены в случае признания их оскорбительными или неуместными.</li>
+              </ol>
+            </div>
+
+            <div class="law-section">
+              <h3 style="color: #cc0000;">Раздел 4. Общественный порядок и соблюдение законов</h3>
+              <ol>
+                <li>Деяния, приводящие к ущербу инфраструктуры города, запрещены.</li>
+                <li>Многократные нарушения закона ведут к строгим санкциям и ЧС.</li>
+                <li>Любые штрафы должны быть оплачены в течение назначенного срока и не могут превышать 27 стаков ар.</li>
+              </ol>
+            </div>
+
+            <div class="law-section">
+              <h3 style="color: #cc0000;">Раздел 5. Защита культурного наследия и традиций</h3>
+              <ol>
+                <li>Правительство города Донецк обладают особым уважением и полномочиями для охраны порядка.</li>
+                <li>Несоблюдение законодательства, введенного правительством, повлечет за собой соответствующее наказание.</li>
+              </ol>
+            </div>
+
+            <div class="law-section">
+              <h3 style="color: #cc0000;">Раздел 6. Изменения в законах</h3>
+              <ol>
+                <li>Законы могут подвергаться изменениям по усмотрению правительства без предварительного уведомления населения.</li>
+                <li>Каждый житель и гость города равен перед законом, и дискриминация по любому признаку категорически запрещена.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="page-disclaimer">
+            <p>Город Донецк на СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+
+        <div id="events-page" class="content-page" style="display: none">
+          <h2>События города</h2>
+          
+          <h3 style="color: #cc0000; margin-top: 30px; margin-bottom: 20px;">Предстоящие события</h3>
+          <div class="event-container">
+            <div class="event-card">
+              <h3>Откыртие города</h3>
+              <p>Дата: хз</p>
+              <p>Место: хз</p>
+              <p>Описание: хз</p>
+            </div>
+          </div>
+          
+          <h3 style="color: #cc0000; margin-top: 40px; margin-bottom: 20px;">Прошедшие события</h3>
+          <div class="event-container">
+            <p style="padding: 20px; text-align: center; color: #666; font-style: italic;">В настоящее время прошедших событий нет. Следите за обновлениями!</p>
+          </div>
+
+          <div class="page-disclaimer">
+            <p>Город Донецк на СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+
+        <div
+          id="best-residents-page"
+          class="content-page"
+          style="display: none"
+        >
+          <h2>Лучшие жители города</h2>
+          <div class="blacklist-container">
+            <p style="padding: 20px; text-align: center; color: #666; font-style: italic;">В настоящее время список лучших жителей пуст. Станьте первым лучшим жителем города Донецк!</p>
+          </div>
+
+          <div class="page-disclaimer">
+            <p>Город Донецк на СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+
+        <div id="blacklist-page" class="content-page" style="display: none">
+          <h2>Чёрный список</h2>
+          <div class="blacklist-container">
+            <p style="padding: 20px; text-align: center; color: #666; font-style: italic;">В настоящее время черный список пуст. Ахуенно.</p>
+          </div>
+
+          <div class="page-disclaimer">
+            <p>Город Донецк на СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+
+        <div id="discord-page" class="content-page" style="display: none">
+          <h2>Наш Discord сервер</h2>
+          <div class="discord-container">
+            <p>Присоединяйтесь к нашему сообществу! Это дискорд</p>
+            <button
+              class="discord-button"
+              onclick="window.open('https://discord.gg/fxmc7RVq7k')"
+            >
+              Присоединиться к Discord
+            </button>
+          </div>
+
+          <div class="page-disclaimer">
+            <p>Город Донецк на СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+
+        <div id="join-page" class="content-page" style="display: none">
+          <h2>Как вступить</h2>
+          <div class="join-container">
+            <h3>Требования для вступления:</h3>
+            <ol>
+              <li>Уметь читать рэп (необязательно)</li>
+              <li>Уметь чиллить (обязательно)</li>
+              <li>Уметь писать</li>
+            </ol>
+            <button class="join-button">Подать заявку</button>
+          </div>
+
+          <div class="page-disclaimer">
+            <p>Город Донецк на СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+
+        <!-- Страница Политика конфиденциальности -->
+        <div id="privacy-page" class="content-page" style="display: none">
+          <h2>Политика конфиденциальности (Политика конфиденциальности)</h2>
+          <div class="privacy-container">
+            <p>Последнее обновление: [Дата]</p>
+            
+            <h3>1. Введение</h3>
+            <p>Добро пожаловать на сайт города Донецк в СПм. Сайт носит демонстрационный характер и ничего не собирает.</p>
+            
+            <h3>2. Какие данные мы собираем</h3>
+            <p>эээ ну никаких.</p>
+            
+            <h3>3. Как мы используем ваши данные</h3>
+            <p>никаих</p>
+            
+            <h3>4. Контакты</h3>
+            <p>По всем вопросам: https://gazakov.github.io</p>
+          </div>
+          
+          <!-- Один дисклеймер в конце страницы -->
+          <div class="page-disclaimer">
+            <p>Город Донецк на СПм не имеет никакого отношения к настоящему городу Донецк.</p>
+            <a href="#" onclick="showPage('privacy')">Политика конфиденциальности</a>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function showPage(pageId) {
+        // Скрываем все страницы
+        document.querySelectorAll(".content-page").forEach((page) => {
+          page.style.display = "none";
+        });
+
+        // Показываем выбранную страницу
+        document.getElementById(pageId + "-page").style.display = "block";
+
+        // Обновляем активную ссылку в меню
+        document.querySelectorAll(".sidebar-menu a").forEach((link) => {
+          link.classList.remove("active");
+        });
+        
+        // Активируем ссылку только если это не страница Политика конфиденциальности
+        if (pageId !== 'privacy') {
+          const activeLink = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+          if (activeLink) {
+            activeLink.classList.add("active");
+          }
+        }
+        
+        // Скрываем мобильное меню после выбора страницы
+        if (window.innerWidth <= 767) {
+          document.querySelector('.sidebar').classList.remove('active');
+          document.getElementById('hamburger-icon').classList.remove('active');
+        }
+      }
+
+      // Показываем главную страницу и устанавливаем активную ссылку при загрузке
+      window.onload = function () {
+        showPage("main");
+        document
+          .querySelector(`[onclick="showPage('main')"]`)
+          .classList.add("active");
+      };
+      
+      // Обновленная функция переключения мобильного меню с анимацией
+      function toggleMobileMenu() {
+        const sidebar = document.querySelector('.sidebar');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        
+        sidebar.classList.toggle('active');
+        hamburgerIcon.classList.toggle('active');
+      }
+    </script>
+  </body>
+</html>
