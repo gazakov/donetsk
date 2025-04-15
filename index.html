@@ -502,17 +502,28 @@
         }
         
         .sidebar {
-          margin-bottom: 20px;
-          display: none; /* Скрываем боковое меню по умолчанию */
+          position: fixed;
+          top: 50px;
+          left: -100%; /* Начальная позиция за пределами экрана */
+          width: 100%;
+          height: calc(100vh - 50px);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease-in-out;
+          background: linear-gradient(to bottom, #cc0000, #990000);
+          z-index: 999;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .sidebar.active {
-          display: block;
-          top: 50px;
+          left: 0;
           opacity: 1;
-          height: auto;
-          max-height: 80vh;
-          overflow-y: auto;
+          visibility: visible;
+        }
+        
+        /* Предотвращаем прокрутку основного контента при открытом меню */
+        body.menu-open {
+          overflow: hidden;
         }
         
         .hamburger-menu {
@@ -773,22 +784,22 @@
           top: 50px;
           width: 100%;
           margin: 0;
-          padding: 10px; /* Добавляем отступы вокруг всего меню */
-          background: linear-gradient(to bottom, #cc0000, #990000);
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          padding: 20px; /* Увеличиваем отступы вокруг всего меню */
+          background: linear-gradient(145deg, #cc0000, #990000); /* Диагональный градиент */
+          box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
           z-index: 999;
           box-sizing: border-box;
         }
 
         .sidebar-menu {
-          margin: 0 auto; /* Центрируем меню */
+          margin: 0 auto;
           padding: 0;
           list-style: none;
           width: 100%;
-          max-width: 600px; /* Максимальная ширина меню */
+          max-width: 400px; /* Уменьшаем максимальную ширину меню */
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 10px; /* Увеличиваем отступы между кнопками */
+          gap: 15px; /* Увеличиваем отступы между кнопками */
           box-sizing: border-box;
         }
 
@@ -807,35 +818,43 @@
           color: white;
           text-decoration: none;
           background: rgba(255, 255, 255, 0.1);
-          border-radius: 8px; /* Добавляем скругление углов */
+          border-radius: 12px; /* Увеличиваем скругление углов */
           width: 100%;
           box-sizing: border-box;
           text-align: center;
-          font-size: 16px;
-          font-weight: bold;
-          padding: 5px; /* Добавляем небольшой внутренний отступ */
-          transition: all 0.3s ease; /* Добавляем плавность анимации */
-          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); /* Тень для текста */
+          font-size: 14px; /* Уменьшаем размер шрифта */
+          font-weight: 500;
+          padding: 10px;
+          transition: all 0.3s ease;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(5px);
         }
 
         .sidebar-menu a:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: scale(0.98); /* Небольшая анимация при нажатии */
+          background: rgba(255, 255, 255, 0.15);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .sidebar-menu a.active {
-          background: rgba(255, 255, 255, 0.25);
-          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+          background: rgba(255, 255, 255, 0.2);
+          box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         /* Для очень маленьких экранов */
         @media screen and (max-width: 375px) {
           .sidebar-menu {
-            gap: 5px; /* Уменьшаем отступы для маленьких экранов */
+            gap: 10px;
+            padding: 10px;
           }
           
           .sidebar-menu a {
-            font-size: 14px; /* Уменьшаем размер текста */
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 10px;
           }
         }
       }
@@ -876,11 +895,20 @@
           <!-- Секция с видео -->
           <div class="video-section">
             <div class="video-container">
-              <!-- Здесь будет ваше видео -->
-              <div class="video-placeholder">
-                <p>Скоро здесь появится тизер города</p>
-              </div>
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/66lEvtLDotc" 
+                title="Тизер города Донецк" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                style="aspect-ratio: 16/9;"
+              ></iframe>
             </div>
+            <p style="margin-top: 10px; font-style: italic; color: #666;">
+              (не грузит тизер? вали в США.)
+            </p>
           </div>
 
           <!-- Приветственный текст -->
@@ -1162,13 +1190,45 @@
           .classList.add("active");
       };
       
-      // Обновленная функция переключения мобильного меню с анимацией
+      // Добавляем обработку свайпов
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      document.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        const swipeThreshold = 50; // Минимальное расстояние для свайпа
+        const diff = touchEndX - touchStartX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+          const sidebar = document.querySelector('.sidebar');
+          const hamburgerIcon = document.getElementById('hamburger-icon');
+          
+          if (diff < 0) { // Свайп влево
+            sidebar.classList.remove('active');
+            hamburgerIcon.classList.remove('active');
+          }
+        }
+      }
+
+      // Обновляем функцию toggleMobileMenu
       function toggleMobileMenu() {
         const sidebar = document.querySelector('.sidebar');
         const hamburgerIcon = document.getElementById('hamburger-icon');
+        const body = document.body;
         
         sidebar.classList.toggle('active');
         hamburgerIcon.classList.toggle('active');
+        
+        // Переключаем класс для блокировки прокрутки
+        body.classList.toggle('menu-open');
       }
     </script>
   </body>
