@@ -10,6 +10,7 @@
         padding: 0;
         font-family: Arial, sans-serif;
         background: #f1f1f1;
+        -webkit-overflow-scrolling: touch; /* Улучшает плавность прокрутки на iOS */
       }
 
       /* Верхняя навигация */
@@ -347,6 +348,8 @@
         align-self: flex-start;
         min-height: 300px;
         padding: 20px;
+        -webkit-overflow-scrolling: touch; /* Обеспечиваем поддержку прокрутки на iOS */
+        overflow-y: auto;
       }
 
       .event-container,
@@ -357,6 +360,8 @@
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
       }
 
       .event-card,
@@ -390,6 +395,8 @@
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
       }
 
       .law-section {
@@ -892,6 +899,14 @@
           }
         }
       }
+
+      /* Исправление проблем с прокруткой в мобильной версии */
+      body.menu-open {
+        overflow: hidden; /* Блокируем прокрутку только с открытым меню */
+        position: fixed;
+        width: 100%;
+        height: 100%;
+      }
     </style>
   </head>
   <body>
@@ -1224,31 +1239,14 @@
           .classList.add("active");
       };
       
-      // Изменяем обработку свайпов, чтобы разрешить вертикальную прокрутку
+      // Полностью удаляем блокировку свайпов
       let touchStartX = 0;
       let touchStartY = 0;
-      
+
       document.addEventListener('touchstart', e => {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
       }, { passive: true });
-
-      document.addEventListener('touchmove', function(event) {
-        // Получаем направление свайпа
-        const touchX = event.touches[0].clientX;
-        const startX = touchStartX || touchX;
-        const diffX = Math.abs(touchX - startX);
-        
-        // Определяем, является ли свайп преимущественно горизонтальным
-        const touchY = event.touches[0].clientY;
-        const startY = touchStartY || touchY;
-        const diffY = Math.abs(touchY - startY);
-        
-        // Предотвращаем только горизонтальные свайпы, не трогая вертикальные
-        if (diffX > diffY && diffX > 30) { // Горизонтальный свайп и более 30px смещения
-          event.preventDefault();
-        }
-      }, { passive: false });
 
       // Обновляем функцию toggleMobileMenu
       function toggleMobileMenu() {
@@ -1259,8 +1257,13 @@
         sidebar.classList.toggle('active');
         hamburgerIcon.classList.toggle('active');
         
-        // Переключаем класс для блокировки прокрутки
+        // Переключаем класс для блокировки прокрутки только при открытом меню
         body.classList.toggle('menu-open');
+        
+        // Когда меню закрывается, убедимся, что страница снова скроллится
+        if (!sidebar.classList.contains('active')) {
+          body.style.overflow = '';
+        }
       }
     </script>
   </body>
