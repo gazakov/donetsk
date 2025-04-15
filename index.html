@@ -907,6 +907,34 @@
         width: 100%;
         height: 100%;
       }
+
+      /* Исправление для прокрутки законов на мобильных устройствах */
+      @media screen and (max-width: 767px) {
+        .content-page {
+          overflow: visible;
+          max-height: none;
+          height: auto;
+        }
+        
+        .laws-container {
+          max-height: none;
+          overflow: visible;
+          height: auto;
+        }
+
+        /* Убираем все, что может мешать прокрутке */
+        body:not(.menu-open) {
+          overflow: auto;
+          position: static;
+          height: auto;
+        }
+        
+        /* Исправляем отступ от верхней панели */
+        .main-content {
+          margin-top: 60px;
+          padding-bottom: 50px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1209,7 +1237,17 @@
         });
 
         // Показываем выбранную страницу
-        document.getElementById(pageId + "-page").style.display = "block";
+        const selectedPage = document.getElementById(pageId + "-page");
+        selectedPage.style.display = "block";
+        
+        // Сбрасываем высоту содержимого и положение прокрутки
+        window.scrollTo(0, 0);
+        
+        // Делаем все контейнеры на странице прокручиваемыми
+        if (pageId === 'laws') {
+          document.querySelector('.laws-container').style.maxHeight = 'none';
+          document.querySelector('.laws-container').style.overflow = 'visible';
+        }
 
         // Обновляем активную ссылку в меню
         document.querySelectorAll(".sidebar-menu a").forEach((link) => {
@@ -1224,10 +1262,12 @@
           }
         }
         
-        // Скрываем мобильное меню после выбора страницы
+        // Закрываем мобильное меню и включаем прокрутку
         if (window.innerWidth <= 767) {
           document.querySelector('.sidebar').classList.remove('active');
           document.getElementById('hamburger-icon').classList.remove('active');
+          document.body.classList.remove('menu-open');
+          document.body.style.overflow = '';
         }
       }
 
