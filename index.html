@@ -507,24 +507,21 @@
       
       /* Средние телефоны */
       @media screen and (max-width: 767px) {
-        /* Убедимся, что панель всегда на 100% ширины экрана */
+        /* Удаляем overflow-x: hidden с body и добавляем только когда меню открыто */
         body {
           padding-top: 50px; /* Добавляем отступ для контента, равный высоте панели */
-          overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
+        }
+        
+        body.menu-open {
+          overflow: hidden; /* Блокируем прокрутку только когда меню открыто */
         }
         
         .main-nav {
-          min-width: 100vw; /* Используем viewport width */
+          min-width: 100vw;
           width: 100vw;
           position: fixed;
           top: 0;
           left: 0;
-        }
-        
-        /* Корректируем логотип для маленьких экранов */
-        .logo {
-          font-size: 20px;
-          padding: 15px 0;
         }
         
         /* Корректируем отступ контента для мобильных */
@@ -532,7 +529,6 @@
           margin-top: 50px;
           width: 100%;
           box-sizing: border-box;
-          overflow-x: hidden;
         }
         
         /* Гамбургер-меню для мобильных */
@@ -1228,7 +1224,7 @@
           .classList.add("active");
       };
       
-      // Добавляем обработку свайпов
+      // Изменяем обработку свайпов, чтобы разрешить вертикальную прокрутку
       let touchStartX = 0;
       let touchStartY = 0;
       
@@ -1243,11 +1239,13 @@
         const startX = touchStartX || touchX;
         const diffX = Math.abs(touchX - startX);
         
-        // Если свайп горизонтальный и не в элементе, где свайп нужен (например, карусель)
-        const isHorizontalSwipe = diffX > Math.abs(event.touches[0].clientY - (touchStartY || event.touches[0].clientY));
-        const isInSwipeableElement = event.target.closest('.swipeable'); // Можно добавить класс .swipeable для элементов, где свайп разрешен
+        // Определяем, является ли свайп преимущественно горизонтальным
+        const touchY = event.touches[0].clientY;
+        const startY = touchStartY || touchY;
+        const diffY = Math.abs(touchY - startY);
         
-        if (isHorizontalSwipe && !isInSwipeableElement) {
+        // Предотвращаем только горизонтальные свайпы, не трогая вертикальные
+        if (diffX > diffY && diffX > 30) { // Горизонтальный свайп и более 30px смещения
           event.preventDefault();
         }
       }, { passive: false });
