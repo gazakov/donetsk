@@ -35,8 +35,9 @@
       /* Основная навигация */
       .main-nav {
         background: linear-gradient(to bottom, #cc0000, #990000);
-        position: sticky;
+        position: fixed;
         top: 0;
+        left: 0;
         z-index: 1000;
         width: 100%;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -58,11 +59,13 @@
 
       /* Основной контент */
       .main-content {
+        margin-top: 60px;
         display: grid;
         grid-template-columns: 250px 1fr;
         gap: 20px;
         max-width: 1200px;
-        margin: 20px auto 0;
+        margin-left: auto;
+        margin-right: auto;
         padding: 0 20px;
         align-items: flex-start;
       }
@@ -503,14 +506,13 @@
         
         .sidebar {
           position: fixed;
-          top: 50px;
-          left: -100%; /* Начальная позиция за пределами экрана */
+          top: 50px; /* Высота навигационной панели */
+          left: -100%;
           width: 100%;
           height: calc(100vh - 50px);
           opacity: 0;
           visibility: hidden;
           transition: all 0.3s ease-in-out;
-          background: linear-gradient(to bottom, #cc0000, #990000);
           z-index: 999;
           box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
@@ -519,6 +521,12 @@
           left: 0;
           opacity: 1;
           visibility: visible;
+        }
+        
+        /* Корректируем отступ контента для мобильных */
+        .main-content {
+          margin-top: 50px;
+          grid-template-columns: 1fr;
         }
         
         /* Предотвращаем прокрутку основного контента при открытом меню */
@@ -563,7 +571,7 @@
       /* Маленькие телефоны (iPhone SE) */
       @media screen and (max-width: 375px) {
         .resident-grid {
-          grid-template-columns: 1fr;
+          grid-width: 1fr;
         }
         
         .welcome-section, .video-section {
@@ -1192,31 +1200,27 @@
       
       // Добавляем обработку свайпов
       let touchStartX = 0;
-      let touchEndX = 0;
+      let touchStartY = 0;
       
       document.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-      });
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
 
-      document.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-      });
-
-      function handleSwipe() {
-        const swipeThreshold = 50; // Минимальное расстояние для свайпа
-        const diff = touchEndX - touchStartX;
+      document.addEventListener('touchmove', function(event) {
+        // Получаем направление свайпа
+        const touchX = event.touches[0].clientX;
+        const startX = touchStartX || touchX;
+        const diffX = Math.abs(touchX - startX);
         
-        if (Math.abs(diff) > swipeThreshold) {
-          const sidebar = document.querySelector('.sidebar');
-          const hamburgerIcon = document.getElementById('hamburger-icon');
-          
-          if (diff < 0) { // Свайп влево
-            sidebar.classList.remove('active');
-            hamburgerIcon.classList.remove('active');
-          }
+        // Если свайп горизонтальный и не в элементе, где свайп нужен (например, карусель)
+        const isHorizontalSwipe = diffX > Math.abs(event.touches[0].clientY - (touchStartY || event.touches[0].clientY));
+        const isInSwipeableElement = event.target.closest('.swipeable'); // Можно добавить класс .swipeable для элементов, где свайп разрешен
+        
+        if (isHorizontalSwipe && !isInSwipeableElement) {
+          event.preventDefault();
         }
-      }
+      }, { passive: false });
 
       // Обновляем функцию toggleMobileMenu
       function toggleMobileMenu() {
